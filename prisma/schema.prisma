@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./node_modules/@prisma/client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  nickname  String   @unique
+  reviews   Review[] @relation("UserReviews")
+  missions  Mission[] @relation("UserMissions")
+}
+
+model Store {
+  id        Int      @id @default(autoincrement())
+  name      String
+  location  String
+  missions  Mission[] @relation("StoreMissions")
+  reviews   Review[] @relation("StoreReviews")
+}
+
+model Review {
+  id      Int      @id @default(autoincrement())
+  content String
+  rating  Float
+  date    DateTime @default(now())
+  userId  Int
+  storeId Int      // 필드 추가
+  user    User     @relation("UserReviews", fields: [userId], references: [id])
+  store   Store    @relation("StoreReviews", fields: [storeId], references: [id])  // 수정 완료
+}
+
+
+model Mission {
+  id          Int    @id @default(autoincrement())
+  title       String
+  description String
+  reward      Int
+  status      String
+  userId      Int
+  storeId     Int
+  user        User   @relation("UserMissions", fields: [userId], references: [id])
+  store       Store  @relation("StoreMissions", fields: [storeId], references: [id])
+}

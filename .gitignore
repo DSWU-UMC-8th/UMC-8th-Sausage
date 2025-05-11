@@ -1,0 +1,30 @@
+node_modules
+# Keep environment variables out of version control
+.env
+
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# User folder exclusions
+../../.android/
+../../.vscode/
+../../Desktop/
+../../Documents/
+../../Downloads/
+../../Music/
+../../Pictures/
+../../Videos/
+../../OneDrive/
+../../AppData/
+../../Contacts/
+../../Favorites/
+../../Links/
+../../Searches/
+../../Saved Games/
+../../IntelGraphicsProfiles/
+../../ntuser.*
+../../java_error_in_studio.*
+../../study/
+../../PycharmProjects/
