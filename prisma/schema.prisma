@@ -8,19 +8,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  nickname  String   @unique
-  reviews   Review[] @relation("UserReviews")
-  missions  Mission[] @relation("UserMissions")
-}
+model Mission {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  reward      Int
+  status      String
+  userId      Int
+  storeId     Int
+  createdAt   DateTime @default(now())
+  store       Store    @relation(fields: [storeId], references: [id], map: "Mission_storeId_fkey")
+  user        User     @relation(fields: [userId], references: [id], map: "Mission_userId_fkey")
 
-model Store {
-  id        Int      @id @default(autoincrement())
-  name      String
-  location  String
-  missions  Mission[] @relation("StoreMissions")
-  reviews   Review[] @relation("StoreReviews")
+  @@index([storeId], map: "Mission_storeId_fkey")
+  @@index([userId], map: "Mission_userId_fkey")
 }
 
 model Review {
@@ -29,20 +30,25 @@ model Review {
   rating  Float
   date    DateTime @default(now())
   userId  Int
-  storeId Int      // 필드 추가
-  user    User     @relation("UserReviews", fields: [userId], references: [id])
-  store   Store    @relation("StoreReviews", fields: [storeId], references: [id])  // 수정 완료
+  storeId Int
+  store   Store    @relation(fields: [storeId], references: [id], map: "Review_storeId_fkey")
+  user    User     @relation(fields: [userId], references: [id], map: "Review_userId_fkey")
+
+  @@index([storeId], map: "Review_storeId_fkey")
+  @@index([userId], map: "Review_userId_fkey")
 }
 
+model Store {
+  id       Int       @id @default(autoincrement())
+  name     String
+  location String
+  mission  Mission[]
+  review   Review[]
+}
 
-model Mission {
-  id          Int    @id @default(autoincrement())
-  title       String
-  description String
-  reward      Int
-  status      String
-  userId      Int
-  storeId     Int
-  user        User   @relation("UserMissions", fields: [userId], references: [id])
-  store       Store  @relation("StoreMissions", fields: [storeId], references: [id])
+model User {
+  id       Int       @id @default(autoincrement())
+  nickname String    @unique(map: "User_nickname_key")
+  mission  Mission[]
+  review   Review[]
 }
