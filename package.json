@@ -15,7 +15,9 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "mysql2": "^3.14.1",
-    "prisma": "^6.7.0"
+    "prisma": "^6.7.0",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.1"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
