@@ -52,3 +52,10 @@ model User {
   mission  Mission[]
   review   Review[]
 }
+
+model Session {
+  id      String   @id @default(cuid())
+  expires DateTime
+  data    String
+}
+
